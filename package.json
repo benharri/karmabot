@@ -1,0 +1,26 @@
+{
+  "name": "karmabot",
+  "version": "1.0.0",
+  "description": "karma bot for spark (webex teams?) spaces",
+  "main": "index.js",
+  "engines": {
+    "node": ">9.10.0"
+  },
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "node-flint": "^4.6.6",
+    "request": "^2.87.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitawse1.hagerty.com/bharris/karmabot.git"
+  },
+  "author": "benharri",
+  "homepage": "https://gitawse1.hagerty.com/bharris/karmabot#readme"
+}
