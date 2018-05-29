@@ -1,6 +1,6 @@
-var request = require('request');
+const request = require('request');
 
-var self = module.exports = {
+let self = module.exports = {
     api_request: (method, uri, callback) => {
         request({
             uri: `https://api.ciscospark.com/v1${uri}`,
