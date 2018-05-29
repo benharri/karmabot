@@ -23,5 +23,5 @@ var self = module.exports = {
             console.log(...msg)
     },
 
-    is_self: (id) => id == process.env.BOTT_ID
+    is_self: (id) => id == process.env.BOT_ID || id == process.env.BOTT_ID
 }

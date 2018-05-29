@@ -40,7 +40,7 @@ flint.on('message', function(bot, trigger) {
 
             util.log(`looking up ${person}`)
             util.api_request('GET', `/people/${person}`, (success, json) => {
-                if (success) bot.say(`you mentioned: *${json.displayName}*`)
+                if (success) bot.say(`you mentioned: ${json.displayName}`)
             })
         }
     }
