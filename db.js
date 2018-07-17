@@ -8,20 +8,18 @@ var self = module.exports = {
         ssl: true,
     }),
 
-    query: (sql) => {
+    query: async function (sql) {
         const client = self.setup_connection()
-
         client.connect()
-        let result = [];
-        client.query(sql, (err, res) => {
-            if (err) throw err;
-            for (let row of res.rows) {
-                util.log(row)
-            }
-            result = res.rows
-            client.end()
-        });
-        return result
+
+        let res;
+        try {
+            res = await client.query(sql)
+            util.log(res)
+        } catch(err) {
+            util.log(err.stack);
+        }
+        return res;
     },
 
     migrate: () => {
@@ -34,7 +32,7 @@ var self = module.exports = {
             if (err) {
                 util.log(err.stack)
             } else {
-                util.log(res.rows[0])
+                util.log(res.rows)
             }
         })
     }

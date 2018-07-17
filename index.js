@@ -28,6 +28,7 @@ SELECT column_name
 FROM information_schema.columns
 WHERE table_name = 'karma'; `)
 
+
 util.log("bot starting")
 
 flint.hears('hello', function(bot, trigger) {
@@ -53,29 +54,35 @@ flint.on('message', function(bot, trigger) {
                 if (success) bot.say(`you mentioned: ${json.displayName}`)
 
                 const userparams = {
-                    text: 'SELECT karma from karma where user_id = $1',
+                    text: "SELECT karma from karma where user_id = $1",
                     values: [person]
                 }
-                let rows = db.query(userparams)
-                util.log(rows)
+                util.log("userparams:", userparams)
 
-                if (rows[0]) { // person exists
+                let rows = db.query(userparams)
+                util.log("users found: ", rows)
+
+                if (rows.length) { // person exists
                     util.log(`${person} found in db`)
                     const params = {
-                        text: 'UPDATE karma set karma = $1 where user_id = $2',
+                        text: "UPDATE karma set karma = $1 where user_id = $2",
                         values: [rows[0] + 1, person]
                     }
-                    db.query(params)
+                    util.log("params: ", params)
+                    let result = db.query(params)
+
                     util.log(`${person} has ${rows[0] + 1} karma`)
                     bot.say(`${person} has ${rows[0] + 1} karma`)
                 } else {
                     util.log(`creating user for ${person}`)
                     const params = {
-                        text: 'INSERT INTO karma(user_id, karma) VALUES($1, $2)',
+                        text: "INSERT INTO karma(user_id, karma) VALUES($1, $2)",
                         values: [person, 0],
                     }
+                    util.log("params: ", params)
                     let insert_rows = db.query(params)
-                    util.log(insert_rows)
+
+                    util.log("rows inserted: ", insert_rows)
                     if (insert_rows) {
                         bot.say(`${json.displayName} has 0`)
                     } else {
