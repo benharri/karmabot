@@ -18,6 +18,16 @@ let flint = new Flint({
 
 flint.start()
 db.migrate()
+db.query(`SELECT table_name
+    FROM information_schema.tables
+WHERE table_type = 'BASE TABLE'
+    AND table_schema NOT IN
+        ('pg_catalog', 'information_schema');
+
+SELECT column_name
+FROM information_schema.columns
+WHERE table_name = 'karma'; `)
+
 util.log("bot starting")
 
 flint.hears('hello', function(bot, trigger) {
