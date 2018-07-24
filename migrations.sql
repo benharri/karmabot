@@ -1,4 +1,4 @@
-DROP TABLE karma;
+-- DROP TABLE karma;
 
 CREATE TABLE IF NOT EXISTS karma
 (

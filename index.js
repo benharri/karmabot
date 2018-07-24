@@ -18,27 +18,22 @@ let flint = new Flint({
 
 flint.start()
 db.migrate()
-db.query(`SELECT table_name
-    FROM information_schema.tables
-WHERE table_type = 'BASE TABLE'
-    AND table_schema NOT IN
-        ('pg_catalog', 'information_schema');
-
-SELECT column_name
-FROM information_schema.columns
-WHERE table_name = 'karma'; `)
-
 
 util.log("bot starting")
-
-flint.hears('hello', function(bot, trigger) {
-    util.log(`hello message received from ${trigger.personDisplayName}`)
-    bot.say(`Hello ${trigger.personDisplayName}!`)
-})
 
 flint.hears('ping', function(bot, trigger) {
     util.log(`ping from ${trigger.personDisplayName}`)
     bot.say(`pong! ${trigger.personDisplayName}`)
+})
+
+flint.hears('leaderboard', function(bot, trigger) {
+    const leaderboardparams = {
+        text: "SELECT karma, user_id from karma order by karma desc limit 10"
+    }
+    db.query(leaderboardparams)
+        .then(r => {
+            util.log("leaderboard: ", r)
+        })
 })
 
 flint.on('message', function(bot, trigger) {
@@ -87,7 +82,7 @@ flint.on('message', function(bot, trigger) {
                                 .then(i => {
                                     util.log("rows inserted: ", i)
                                     if (i) {
-                                        bot.say(`${json.displayName} has 0`)
+                                        bot.say(`${json.displayName} has ${karmacount}`)
                                     } else {
                                         bot.say(`something went wrong`)
                                     }
