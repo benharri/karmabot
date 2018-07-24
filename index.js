@@ -45,50 +45,55 @@ flint.on('message', function(bot, trigger) {
     util.log(`message received from ${trigger.personDisplayName}`)
 
     if (trigger.mentionedPeople) {
+        // count the number of `+` and `-` symbols
+        let karmacount = (trigger.text.match(/\+/g) || []).length - (trigger.text.match(/-/g) || []).length
+
         for (let i in trigger.mentionedPeople) {
             let person = trigger.mentionedPeople[i]
             if (util.is_self(person)) continue
 
             util.log(`looking up ${person}`)
             util.api_request('GET', `/people/${person}`, (success, json) => {
-                if (success) bot.say(`you mentioned: ${json.displayName}`)
-
                 const userparams = {
                     text: "SELECT karma from karma where user_id = $1",
                     values: [person]
                 }
                 util.log("userparams:", userparams)
 
-                let rows = db.query(userparams)
-                util.log("users found: ", rows)
+                db.query(userparams)
+                    .then(r => {
+                        util.log("users found: ", r)
 
-                if (rows.length) { // person exists
-                    util.log(`${person} found in db`)
-                    const params = {
-                        text: "UPDATE karma set karma = $1 where user_id = $2",
-                        values: [rows[0] + 1, person]
-                    }
-                    util.log("params: ", params)
-                    let result = db.query(params)
+                        if (r.rowCount == 1) { // person exists
+                            util.log(`${person} found in db`)
+                            const params = {
+                                text: "UPDATE karma set karma = $1 where user_id = $2",
+                                values: [r.rows[0].karma + karmacount, person]
+                            }
+                            util.log("params: ", params)
+                            db.query(params)
 
-                    util.log(`${person} has ${rows[0] + 1} karma`)
-                    bot.say(`${person} has ${rows[0] + 1} karma`)
-                } else {
-                    util.log(`creating user for ${person}`)
-                    const params = {
-                        text: "INSERT INTO karma(user_id, karma) VALUES($1, $2)",
-                        values: [person, 0],
-                    }
-                    util.log("params: ", params)
-                    let insert_rows = db.query(params)
-
-                    util.log("rows inserted: ", insert_rows)
-                    if (insert_rows) {
-                        bot.say(`${json.displayName} has 0`)
-                    } else {
-                        bot.say(`something went wrong`)
-                    }
-                }
+                            util.log(`${json.displayName} has ${r.rows[0].karma + karmacount} karma`)
+                            bot.say(`${json.displayName} has ${r.rows[0].karma + karmacount} karma`)
+                        }
+                        else {
+                            util.log(`creating user for ${json.displayName} ${person}`)
+                            const params = {
+                                text: "INSERT INTO karma(user_id, karma) VALUES($1, $2)",
+                                values: [person, karmacount],
+                            }
+                            util.log("params: ", params)
+                            let insert_rows = db.query(params)
+                                .then(i => {
+                                    util.log("rows inserted: ", i)
+                                    if (i) {
+                                        bot.say(`${json.displayName} has 0`)
+                                    } else {
+                                        bot.say(`something went wrong`)
+                                    }
+                                })
+                        }
+                    })
             })
         }
     }
