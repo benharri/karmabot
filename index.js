@@ -83,8 +83,8 @@ flint.on('message', function(bot, trigger) {
                         else {
                             util.log(`creating user for ${json.displayName} ${person}`)
                             const params = {
-                                text: "INSERT INTO karma(user_id, karma) VALUES($1, $2)",
-                                values: [person, karmacount],
+                                text: "INSERT INTO karma(user_id, email, karma) VALUES($1, $2, $3)",
+                                values: [person, json.emails[0], karmacount],
                             }
                             util.log("params: ", params)
                             let insert_rows = db.query(params)
