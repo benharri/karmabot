@@ -42,7 +42,13 @@ flint.on('message', function(bot, trigger) {
     if (trigger.mentionedPeople) {
         // count the number of `+` and `-` symbols
         let karmacount = (trigger.text.match(/\+/g) || []).length - (trigger.text.match(/-/g) || []).length
-        karmacount = karmacount > process.env.KARMA_NO_FUN_LIMIT ? process.env.KARMA_NO_FUN_LIMIT : karmacount
+
+        let limit = parseInt(process.env.KARMA_NO_FUN_LIMIT)
+        if (karmacount > limit) {
+            karmacount = limit
+        } else if (karmacount < (limit * -1)) {
+            karmacount = limit * -1
+        }
 
         for (let i in trigger.mentionedPeople) {
             let person = trigger.mentionedPeople[i]
