@@ -13,7 +13,8 @@ let db = require('./db')
 
 let flint = new Flint({
     webhookUrl: `${process.env.ENDPOINT}/flint`,
-    token: process.env.BOT_TOKEN
+    token: process.env.BOT_TOKEN,
+    messageFormat: 'markdown'
 })
 
 flint.start()
@@ -21,22 +22,7 @@ db.migrate()
 
 util.log("bot starting")
 
-flint.hears('ping', function(bot, trigger) {
-    util.log(`ping from ${trigger.personDisplayName}`)
-    bot.say(`pong! ${trigger.personDisplayName}`)
-})
-
-flint.hears('leaderboard', function(bot, trigger) {
-    const leaderboardparams = {
-        text: "SELECT karma, user_id from karma order by karma desc limit 10"
-    }
-    db.query(leaderboardparams)
-        .then(r => {
-            util.log("leaderboard: ", r)
-        })
-})
-
-flint.on('message', function(bot, trigger) {
+flint.on('messageCreated', function(bot, trigger) {
     util.log(`message received from ${trigger.personDisplayName}`)
 
     if (trigger.mentionedPeople) {
@@ -99,6 +85,16 @@ flint.on('message', function(bot, trigger) {
                         }
                     })
             })
+        }
+    } else { // no mentions
+        if (trigger.text == 'leaderboard') {
+            const leaderboardparams = {
+                text: "SELECT karma, user_id from karma order by karma desc limit 10"
+            }
+            db.query(leaderboardparams)
+                .then(r => {
+                    util.log("leaderboard: ", r)
+                })
         }
     }
 })
