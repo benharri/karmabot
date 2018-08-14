@@ -46,10 +46,10 @@ flint.on('message', function(bot, trigger) {
         let limit = parseInt(process.env.KARMA_NO_FUN_LIMIT)
         if (karmacount > limit) {
             karmacount = limit
-            bot.say(`BUZZKILL mode activated. adding ${limit} karma.`)
+            bot.say(`# **BUZZKILL** mode activated. adding ${limit} karma.`)
         } else if (karmacount < (limit * -1)) {
             karmacount = limit * -1
-            bot.say(`BUZZKILL mode activated. removing ${limit} karma.`)
+            bot.say(`# **BUZZKILL** mode activated. removing ${limit} karma.`)
         }
 
         for (let i in trigger.mentionedPeople) {
