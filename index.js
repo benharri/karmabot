@@ -22,7 +22,7 @@ db.migrate()
 
 util.log("bot starting")
 
-flint.on('messageCreated', function(bot, trigger) {
+flint.on('message', function(bot, trigger) {
     util.log(`message received from ${trigger.personDisplayName}`)
 
     if (trigger.mentionedPeople) {
