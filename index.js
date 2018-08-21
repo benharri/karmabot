@@ -87,13 +87,17 @@ flint.on('message', function(bot, trigger) {
             })
         }
     } else { // no mentions
-        util.log(trigger.text)
         if (trigger.text.indexOf('leaderboard') > -1) {
             const leaderboardparams = {
                 text: "SELECT karma, user_id from karma order by karma desc limit 10"
             }
             db.query(leaderboardparams)
                 .then(r => {
+                    let position = 1
+                    for (let row of r.rows) {
+                        bot.say(`${position}: ${row.user_id} has ${row.karma}`)
+                        position ++
+                    }
                     util.log("leaderboard: ", r)
                 })
         }
