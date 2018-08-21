@@ -87,7 +87,8 @@ flint.on('message', function(bot, trigger) {
             })
         }
     } else { // no mentions
-        if (trigger.text == 'leaderboard') {
+        util.log(trigger.text)
+        if (trigger.text.indexOf('leaderboard') > -1) {
             const leaderboardparams = {
                 text: "SELECT karma, user_id from karma order by karma desc limit 10"
             }
