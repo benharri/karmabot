@@ -89,15 +89,15 @@ flint.on('message', function(bot, trigger) {
     } else { // no mentions
         if (trigger.text.indexOf('leaderboard') > -1) {
             const leaderboardparams = {
-                text: "SELECT karma, user_id from karma order by karma desc limit 10"
+                text: "SELECT karma, email, user_id from karma order by karma desc limit 10"
             }
             db.query(leaderboardparams)
                 .then(r => {
                     let position = 1
                     let messagetext = "## karma leaderboard: top 10\n"
                     for (let row of r.rows) {
-                        messagetext += `${position}: ${row.user_id} has ${row.karma}\n`
-                        position ++
+                        messagetext += `${position}: ${row.email} has ${row.karma}\n`
+                        position++
                     }
                     bot.say(messagetext)
                     util.log("leaderboard: ", r)
