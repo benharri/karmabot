@@ -96,7 +96,7 @@ flint.on('message', function(bot, trigger) {
                     let position = 1
                     let messagetext = "## karma leaderboard: top 10\n"
                     for (let row of r.rows) {
-                        messagetest += `${position}: ${row.user_id} has ${row.karma}\n`
+                        messagetext += `${position}: ${row.user_id} has ${row.karma}\n`
                         position ++
                     }
                     bot.say(messagetext)
