@@ -94,10 +94,12 @@ flint.on('message', function(bot, trigger) {
             db.query(leaderboardparams)
                 .then(r => {
                     let position = 1
+                    let messagetext = "## karma leaderboard: top 10\n"
                     for (let row of r.rows) {
-                        bot.say(`${position}: ${row.user_id} has ${row.karma}`)
+                        messagetest += `${position}: ${row.user_id} has ${row.karma}\n`
                         position ++
                     }
+                    bot.say(messagetext)
                     util.log("leaderboard: ", r)
                 })
         }
