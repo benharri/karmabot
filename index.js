@@ -25,7 +25,7 @@ util.log("bot starting")
 flint.on('message', function(bot, trigger) {
     util.log(`message received from ${trigger.personDisplayName}`)
 
-    if (trigger.mentionedPeople) {
+    if (trigger.mentionedPeople.length > 1) {
         // count the number of `+` and `-` symbols
         let karmacount = (trigger.text.match(/\+/g) || []).length - (trigger.text.match(/-/g) || []).length
 
