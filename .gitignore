@@ -1,2 +1,5 @@
 .env
 node_modules
+
+# VS Code cache/options directory
+.vscode/
