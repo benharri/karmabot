@@ -29,7 +29,7 @@ karma changes are capped to 5 at a time
 
 ## heroku deployment:
 
-1. configure [heroku](https://dashboard.heroku.com) with a new project set up to use heroku's git master or any branch on github that you specify
+1. configure [heroku](https://dashboard.heroku.com) with a new project set up to use heroku's git master or any branch on github that you specify.
 1. edit `.env` with the endpoint of `https://{app-name}.herokuapp.com`
 1. push to heroku or the specified github branch
 1. add the webex teams bot to your space by username 
